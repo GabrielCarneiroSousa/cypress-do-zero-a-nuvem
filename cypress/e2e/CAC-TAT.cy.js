@@ -1,5 +1,8 @@
 //const { text } = require("stream/consumers")
 
+const { METHODS } = require("http")
+const { url } = require("inspector")
+
 //const { it } = require("node:test")
 
 describe('Central de Atendimento ao Cliente TAT', () => {
@@ -268,6 +271,25 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       .invoke('val','Gabriel novo QA')
         .should('have.value', 'Gabriel novo QA')
   })
+
+  it('faz uma requisição HTTP',()=>{
+    cy.request('https://cac-tat-v3.s3.eu-central-1.amazonaws.com/index.html')
+      .as('getRequest')
+        .its('status')
+          .should('be.equal', 200)
+    cy.get('@getRequest')
+      .its('statusText')
+        .should('be.equal','OK')
+    cy.get('@getRequest')
+      .its('body')
+        .should('include','CAC TAT')
   })
 
+  it.only('Achando o gato',()=>{
+    cy.get('#cat')
+        .invoke('show')
+          .should('be.visible')
+            
+  })
+  })
 
